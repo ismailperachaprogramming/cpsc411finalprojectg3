@@ -93,7 +93,7 @@ struct ContentView: View {
                             .foregroundColor(.red)
                     }
 
-                    Spacer()
+                    //Spacer()
 
                     // Set Goal
                     VStack {
@@ -196,15 +196,15 @@ struct TeardropShape: Shape {
         path.move(to: CGPoint(x: center.x, y: rect.minY))
         path.addQuadCurve(
             to: CGPoint(x: rect.minX, y: rect.maxY),
-            control: CGPoint(x: rect.minX - width * 0.4, y: rect.midY)
+            control: CGPoint(x: rect.minX - width * 0.2, y: rect.midY)
         )
         path.addQuadCurve(
             to: CGPoint(x: rect.maxX, y: rect.maxY),
-            control: CGPoint(x: center.x, y: rect.maxY + height * 0.6)
+            control: CGPoint(x: center.x, y: rect.maxY + height * 0.5)
         )
         path.addQuadCurve(
             to: CGPoint(x: center.x, y: rect.minY),
-            control: CGPoint(x: rect.maxX + width * 0.4, y: rect.midY)
+            control: CGPoint(x: rect.maxX + width * 0.2, y: rect.midY)
         )
         return path
     }
