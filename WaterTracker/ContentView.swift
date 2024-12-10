@@ -41,11 +41,9 @@ struct ContentView: View {
                         Text("Thirsty?")
                             .font(.largeTitle)
                             .bold()
-                            .padding(.top, 0)
                         
                         Text("\(formattedDate(selectedDate))")
                             .font(.headline)
-                            .padding(.top, 0)
 
                         ZStack {
                             // Background Teardrop Shape Outline
@@ -73,7 +71,7 @@ struct ContentView: View {
                                     .foregroundColor(.black)
                             }
                         }
-                        .padding(.top, 20)
+                        .padding()
                         
                         HStack {
                             Stepper("Add: \(addAmount) oz", value: $addAmount, in: 1...32, step: 1)
@@ -91,26 +89,23 @@ struct ContentView: View {
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
-                        .padding(.vertical, 5)
+                        .padding()
 
                         // Reset Button
                         Button(action: resetDailyIntake) {
                             Text("Reset for New Day")
                                 .foregroundColor(.red)
                         }
-                        .padding(.vertical, 5)
+
+                        //Spacer()
 
                         // Set Goal
                         VStack {
                             Text("Set Daily Goal")
                                 .font(.headline)
                             Stepper("Goal: \(dailyGoal) oz", value: $dailyGoal, in: 8...200, step: 1)
-                                .frame(maxWidth: .infinity)
-                                .padding(.horizontal)
                         }
-                        .padding(.vertical, 10)
-
-                        Spacer() // This spacer ensures content remains at the bottom of the screen
+                        .padding()
                     }
                     .padding()
                     .onAppear {
@@ -181,7 +176,7 @@ struct CalendarTab: View {
         VStack {
             DatePicker("Select Date", selection: $selectedDate, displayedComponents: .date)
                 .datePickerStyle(GraphicalDatePickerStyle())
-
+            
             let formattedDateString = formattedDate(selectedDate)
             let waterIntakeForSelectedDate = waterRecords[formattedDateString] ?? 0
             let progressForSelectedDate = min(Double(waterIntakeForSelectedDate) / Double(dailyGoal), 1.0)
