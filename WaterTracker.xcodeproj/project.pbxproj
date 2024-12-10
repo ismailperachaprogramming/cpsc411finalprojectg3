@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F85B12B12D081CAF0005B288 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85B12B02D081CAF0005B288 /* CalendarView.swift */; };
 		F8BF2FDB2CFFD51400E9A464 /* WaterTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF2FDA2CFFD51400E9A464 /* WaterTrackerApp.swift */; };
 		F8BF2FDD2CFFD51400E9A464 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BF2FDC2CFFD51400E9A464 /* ContentView.swift */; };
 		F8BF2FDF2CFFD51400E9A464 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8BF2FDE2CFFD51400E9A464 /* Assets.xcassets */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F85B12B02D081CAF0005B288 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		F8BF2FD72CFFD51400E9A464 /* WaterTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaterTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8BF2FDA2CFFD51400E9A464 /* WaterTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterTrackerApp.swift; sourceTree = "<group>"; };
 		F8BF2FDC2CFFD51400E9A464 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 		F8BF2FD92CFFD51400E9A464 /* WaterTracker */ = {
 			isa = PBXGroup;
 			children = (
+				F85B12B02D081CAF0005B288 /* CalendarView.swift */,
 				F8BF2FDA2CFFD51400E9A464 /* WaterTrackerApp.swift */,
 				F8BF2FDC2CFFD51400E9A464 /* ContentView.swift */,
 				F8BF2FDE2CFFD51400E9A464 /* Assets.xcassets */,
@@ -259,6 +262,7 @@
 			files = (
 				F8BF2FDD2CFFD51400E9A464 /* ContentView.swift in Sources */,
 				F8BF2FDB2CFFD51400E9A464 /* WaterTrackerApp.swift in Sources */,
+				F85B12B12D081CAF0005B288 /* CalendarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

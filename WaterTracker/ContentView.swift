@@ -35,15 +35,17 @@ struct ContentView: View {
 
     var body: some View {
         TabView {
-            NavigationView {
+            NavigationStack {
                 ScrollView { // Added ScrollView to allow scrolling
                     VStack(spacing: 20) {
                         Text("Thirsty?")
                             .font(.largeTitle)
                             .bold()
+                            .padding(.top, 0)
                         
                         Text("\(formattedDate(selectedDate))")
                             .font(.headline)
+                            .padding(.top, 0)
 
                         ZStack {
                             // Background Teardrop Shape Outline
@@ -71,7 +73,7 @@ struct ContentView: View {
                                     .foregroundColor(.black)
                             }
                         }
-                        .padding()
+                        .padding(.top, 20)
                         
                         HStack {
                             Stepper("Add: \(addAmount) oz", value: $addAmount, in: 1...32, step: 1)
@@ -89,23 +91,26 @@ struct ContentView: View {
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
-                        .padding()
+                        .padding(.vertical, 5)
 
                         // Reset Button
                         Button(action: resetDailyIntake) {
                             Text("Reset for New Day")
                                 .foregroundColor(.red)
                         }
-
-                        //Spacer()
+                        .padding(.vertical, 5)
 
                         // Set Goal
                         VStack {
                             Text("Set Daily Goal")
                                 .font(.headline)
                             Stepper("Goal: \(dailyGoal) oz", value: $dailyGoal, in: 8...200, step: 1)
+                                .frame(maxWidth: .infinity)
+                                .padding(.horizontal)
                         }
-                        .padding()
+                        .padding(.vertical, 10)
+
+                        Spacer() // This spacer ensures content remains at the bottom of the screen
                     }
                     .padding()
                     .onAppear {
@@ -167,55 +172,11 @@ struct ContentView: View {
     }
 }
 
-struct CalendarTab: View {
-    @Binding var selectedDate: Date
-    var waterRecords: [String: Int]
-    @AppStorage("dailyGoalOz") private var dailyGoal: Int = 64
-
-    var body: some View {
-        VStack {
-            DatePicker("Select Date", selection: $selectedDate, displayedComponents: .date)
-                .datePickerStyle(GraphicalDatePickerStyle())
-            
-            let formattedDateString = formattedDate(selectedDate)
-            let waterIntakeForSelectedDate = waterRecords[formattedDateString] ?? 0
-            let progressForSelectedDate = min(Double(waterIntakeForSelectedDate) / Double(dailyGoal), 1.0)
-
-            Text("Water Drank: \(waterIntakeForSelectedDate) oz")
-                .font(.headline)
-                .padding()
-
-            // Add the TeardropShape with progress
-            ZStack {
-                TeardropShape()
-                    .stroke(Color.blue.opacity(0.3), lineWidth: 6) // Adjust line width if needed
-                    .frame(width: 150, height: 225) // Reduced dimensions
-
-                TeardropShape()
-                    .fill(Color.blue.opacity(0.6))
-                    .frame(width: 150, height: 225) // Reduced dimensions
-                    .mask(
-                        Rectangle()
-                            .frame(height: 225 * progressForSelectedDate) // Adjusted height
-                            .offset(y: (1 - progressForSelectedDate) * 112.5) // Adjusted offset
-                    )
-                    .animation(.easeInOut, value: progressForSelectedDate)
-
-                Text("\(waterIntakeForSelectedDate) / \(dailyGoal) oz")
-                    .font(.title2) // Possibly use a smaller font
-                    .bold()
-                    .foregroundColor(.black)
-            }
-            .padding()
-        }
-    }
-
-    private func formattedDate(_ date: Date) -> String {
+private func formattedDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         return formatter.string(from: date)
     }
-}
 
 struct TeardropShape: Shape {
     func path(in rect: CGRect) -> Path {
@@ -247,9 +208,30 @@ struct TeardropShape: Shape {
 // Preview for Xcode Canvas
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
-            .previewDevice("iPhone 14") // Specify a device for the preview
-            .preferredColorScheme(.light) // Set to light or dark mode
+        Group {
+            ContentView()
+                .previewDevice("iPhone SE (3rd generation)")
+                .previewDisplayName("iPhone SE Portrait")
+                .preferredColorScheme(.light)
+
+            ContentView()
+                .previewDevice("iPhone 14")
+                .previewDisplayName("iPhone 14 Landscape")
+                .previewInterfaceOrientation(.landscapeLeft)
+           
+            ContentView()
+                .previewDevice("iPhone 14")
+                .previewDisplayName("iPhone 14 Portrait")
+                .previewInterfaceOrientation(.portrait)
+
+            ContentView()
+                .previewDevice("iPad Pro (12.9-inch) (6th generation)")
+                .previewDisplayName("iPad Pro Portrait")
+            ContentView()
+                .previewDevice("iPad Pro (12.9-inch) (6th generation)")
+                .previewDisplayName("iPad Pro Landscape")
+                .previewInterfaceOrientation(.landscapeLeft)
+        }
     }
 }
 
