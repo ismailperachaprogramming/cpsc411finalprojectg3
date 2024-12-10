@@ -24,7 +24,7 @@
 
 1. **Clone the Repository**
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/ismailperachaprogramming/watertracker.git
     cd WaterTracker
 2. **Open in Xcode**
 - Open the WaterTracker.xcodeproj file in Xcode.
