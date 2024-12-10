@@ -54,8 +54,11 @@ struct ContentView: View {
                         TeardropShape()
                             .fill(Color.blue.opacity(0.6))
                             .frame(width: 200, height: 300)
-                            .clipShape(TeardropShape()) // Clip the fill to match the teardrop shape
-                            .scaleEffect(x: 1, y: progress, anchor: .bottom) // Scale fill to progress
+                            .mask(
+                                Rectangle()
+                                    .frame(height: 300 * progress) // Scale height based on progress
+                                    .offset(y: (1 - progress) * 150) // Offset to maintain bottom-up fill
+                            )
                             .animation(.easeInOut, value: progress)
 
                         // Text for Progress
@@ -193,23 +196,27 @@ struct TeardropShape: Shape {
         let height = rect.height
         let center = CGPoint(x: rect.midX, y: rect.midY)
 
-        // Create the teardrop shape
+        // Start at the top of the drop
         path.move(to: CGPoint(x: center.x, y: rect.minY))
+
         // Draw the left curve
         path.addQuadCurve(
-            to: CGPoint(x: rect.minX, y: rect.maxY),
-            control: CGPoint(x: rect.minX - width * 0.2, y: rect.midY)
+            to: CGPoint(x: rect.minX + width * 0.2, y: rect.maxY - height * 0.1),
+            control: CGPoint(x: rect.minX - width * 0.2, y: rect.maxY * 0.3)
         )
-        // Draw the bottom curve
+
+        // Create a rounded bottom
         path.addQuadCurve(
-            to: CGPoint(x: rect.maxX, y: rect.maxY),
-            control: CGPoint(x: center.x, y: rect.maxY + height * 0.5)
+            to: CGPoint(x: rect.maxX - width * 0.2, y: rect.maxY - height * 0.1),
+            control: CGPoint(x: center.x, y: rect.maxY + height * 0.1)
         )
-        // Draw the right curve
+
+        // Draw the right curve back to the top
         path.addQuadCurve(
             to: CGPoint(x: center.x, y: rect.minY),
-            control: CGPoint(x: rect.maxX + width * 0.2, y: rect.midY)
+            control: CGPoint(x: rect.maxX + width * 0.2, y: rect.maxY * 0.3)
         )
+
         return path
     }
 }
