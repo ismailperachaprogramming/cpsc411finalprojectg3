@@ -59,7 +59,7 @@ struct ContentView: View {
                                     .frame(height: 300 * progress) // Scale height based on progress
                                     .offset(y: (1 - progress) * 150) // Offset to maintain bottom-up fill
                             )
-                            .animation(.easeInOut, value: progress)
+                            .animation(.linear(duration: 0.4), value: progress)
 
                         // Text for Progress
                         VStack {
@@ -67,7 +67,7 @@ struct ContentView: View {
                                 .font(.title)
                             Text("\(Int(progress * 100))%")
                                 .font(.headline)
-                                .foregroundColor(.gray)
+                                .foregroundColor(.black)
                         }
                         
                     }
@@ -168,17 +168,43 @@ struct ContentView: View {
 struct CalendarTab: View {
     @Binding var selectedDate: Date
     var waterRecords: [String: Int]
+    @AppStorage("dailyGoalOz") private var dailyGoal: Int = 64
 
     var body: some View {
         VStack {
             DatePicker("Select Date", selection: $selectedDate, displayedComponents: .date)
                 .datePickerStyle(GraphicalDatePickerStyle())
-                .onChange(of: selectedDate) { _ in
-                    // Handle date change in the main view
-                }
-            Text("Water Drank: \(waterRecords[formattedDate(selectedDate)] ?? 0) oz")
+            
+            let formattedDateString = formattedDate(selectedDate)
+            let waterIntakeForSelectedDate = waterRecords[formattedDateString] ?? 0
+            let progressForSelectedDate = min(Double(waterIntakeForSelectedDate) / Double(dailyGoal), 1.0)
+            
+            Text("Water Drank: \(waterIntakeForSelectedDate) oz")
                 .font(.headline)
                 .padding()
+
+            // Add the TeardropShape with progress
+            ZStack {
+                TeardropShape()
+                    .stroke(Color.blue.opacity(0.3), lineWidth: 6) // Adjust line width if needed
+                    .frame(width: 150, height: 225) // Reduced dimensions
+
+                TeardropShape()
+                    .fill(Color.blue.opacity(0.6))
+                    .frame(width: 150, height: 225) // Reduced dimensions
+                    .mask(
+                        Rectangle()
+                            .frame(height: 225 * progressForSelectedDate) // Adjusted height
+                            .offset(y: (1 - progressForSelectedDate) * 112.5) // Adjusted offset
+                    )
+                    .animation(.easeInOut, value: progressForSelectedDate)
+
+                Text("\(waterIntakeForSelectedDate) / \(dailyGoal) oz")
+                    .font(.title2) // Possibly use a smaller font
+                    .bold()
+                    .foregroundColor(.black)
+            }
+            .padding()
         }
     }
 
@@ -195,32 +221,26 @@ struct TeardropShape: Shape {
         let width = rect.width
         let height = rect.height
         let center = CGPoint(x: rect.midX, y: rect.midY)
-
         // Start at the top of the drop
         path.move(to: CGPoint(x: center.x, y: rect.minY))
-
-        // Draw the left curve
+        // Draw the left curve with adjusted control points for flatter bottom
         path.addQuadCurve(
-            to: CGPoint(x: rect.minX + width * 0.2, y: rect.maxY - height * 0.1),
-            control: CGPoint(x: rect.minX - width * 0.2, y: rect.maxY * 0.3)
+            to: CGPoint(x: rect.minX + width * 0.25, y: rect.maxY - height * 0.1), // Flatter
+            control: CGPoint(x: rect.minX - width * 0.3, y: rect.maxY * 0.4)
         )
-
-        // Create a rounded bottom
+        // Create a flatter bottom
         path.addQuadCurve(
-            to: CGPoint(x: rect.maxX - width * 0.2, y: rect.maxY - height * 0.1),
-            control: CGPoint(x: center.x, y: rect.maxY + height * 0.1)
+            to: CGPoint(x: rect.maxX - width * 0.25, y: rect.maxY - height * 0.1), // Flatter
+            control: CGPoint(x: center.x, y: rect.maxY + height * 0.05) // Lower apex for flatter curve
         )
-
         // Draw the right curve back to the top
         path.addQuadCurve(
             to: CGPoint(x: center.x, y: rect.minY),
-            control: CGPoint(x: rect.maxX + width * 0.2, y: rect.maxY * 0.3)
+            control: CGPoint(x: rect.maxX + width * 0.3, y: rect.maxY * 0.4)
         )
-
         return path
     }
 }
-
 // Preview for Xcode Canvas
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
