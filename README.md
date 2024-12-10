@@ -3,11 +3,11 @@
  WaterTracker is a SwiftUI application designed to help users track their daily water intake and manage their hydration goals.
 
  ## Team 3 Members:
- **Gina Kim**
- **Juli Nazzario**
- **Ismail Peracha**
- **Kevin Ramirez**
- **Helen Truong**
+ - **Gina Kim**
+ - **Juli Nazzario**
+ - **Ismail Peracha**
+ - **Kevin Ramirez**
+ - **Helen Truong**
 
  ## Features
 
